@@ -11,16 +11,16 @@ func ActionCommands() carapace.Action {
 	return carapace.ActionExecCommand("tldr", "--help")(func(output []byte) carapace.Action {
 		switch {
 		case strings.Contains(string(output), "Python"):
-			return actionPythonCommands()
+			return actionCommandsPython()
 		case strings.Contains(string(output), "tealdeer"):
-			return actionTealdeerCommands()
+			return actionCommandsTealdeer()
 		default:
 			return carapace.ActionValues()
 		}
 	})
 }
 
-func actionPythonCommands() carapace.Action {
+func actionCommandsPython() carapace.Action {
 	return carapace.ActionCallback(func(c carapace.Context) carapace.Action {
 		return carapace.ActionExecCommand("tldr", "--list")(func(output []byte) carapace.Action {
 			var commands []string
@@ -38,7 +38,7 @@ func actionPythonCommands() carapace.Action {
 	})
 }
 
-func actionTealdeerCommands() carapace.Action {
+func actionCommandsTealdeer() carapace.Action {
 	return carapace.ActionCallback(func(c carapace.Context) carapace.Action {
 		return carapace.ActionExecCommand("tldr", "--list")(func(output []byte) carapace.Action {
 			lines := strings.Split(string(output), "\n")
